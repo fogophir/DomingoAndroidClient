@@ -1,17 +1,16 @@
 package Domingo.OA.domingoandroidclient;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.ListFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-
-import Domingo.OA.domingoandroidclient.R;
+import android.widget.ArrayAdapter;
 
 public class PostListActivity extends Activity {
 
@@ -21,7 +20,7 @@ public class PostListActivity extends Activity {
         setContentView(R.layout.activity_post_list);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new PostListFragment(this))
                     .commit();
         }
     }
@@ -47,16 +46,26 @@ public class PostListActivity extends Activity {
     }
 
     /**
-     * A placeholder fragment containing a simple view.
+     * The fragment which contains the list
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PostListFragment extends ListFragment {
 
-        public PlaceholderFragment() {
+        Context _context;
+        public PostListFragment(Context context) {
+            _context = context;
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+
+            String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
+                    "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
+                    "Linux", "OS/2" };
+
+            PostListAdapter adapter = new PostListAdapter(_context, values);
+            setListAdapter(adapter);
+
             View rootView = inflater.inflate(R.layout.fragment_post_list, container, false);
             return rootView;
         }
