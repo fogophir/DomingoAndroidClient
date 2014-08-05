@@ -1,30 +1,71 @@
-package Domingo.OA.domingoandroidclient;
+package domingo.oa.domingoandroidclient;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.ListFragment;
-import android.content.Context;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
-public class PostListActivity extends Activity {
+import org.json.JSONArray;
+import org.json.JSONException;
 
+public class PostListActivity extends Activity implements ConnectionHelper.IConnectionCallback {
+
+    PostListFragment _fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
+
+        _fragment = new PostListFragment();
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PostListFragment(this))
+                    .add(R.id.container, _fragment)
                     .commit();
+        }
+
+        handleIntent(getIntent());
+    }
+
+    public void searchTag(String searchTerm){
+        new ConnectionHelper().ExecuteHttpRequestAsync("searchTag","q=" + searchTerm, this);
+    }
+
+    @Override
+    public void Callback(Exception error, String JSONresult) {
+        try {
+            if (error == null) {
+                JSONArray jObject = new JSONArray(JSONresult);
+                PostListAdapter adapter = new PostListAdapter(this, jObject);
+                _fragment.setListAdapter(adapter);
+            }
+            else{
+                //ERROR
+            }
+        }
+        catch (JSONException e){
+            //error with json
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        // get the intent, verify the action and get the query
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            searchTag(query);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,6 +83,11 @@ public class PostListActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
+
+        if (id == R.id.action_search){
+            onSearchRequested();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -50,21 +96,9 @@ public class PostListActivity extends Activity {
      */
     public static class PostListFragment extends ListFragment {
 
-        Context _context;
-        public PostListFragment(Context context) {
-            _context = context;
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-
-            String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                    "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                    "Linux", "OS/2" };
-
-            PostListAdapter adapter = new PostListAdapter(_context, values);
-            setListAdapter(adapter);
 
             View rootView = inflater.inflate(R.layout.fragment_post_list, container, false);
             return rootView;

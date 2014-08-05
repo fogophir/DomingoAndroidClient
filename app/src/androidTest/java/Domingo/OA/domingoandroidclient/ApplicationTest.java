@@ -1,4 +1,4 @@
-package Domingo.OA.domingoandroidclient;
+package domingo.oa.domingoandroidclient;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

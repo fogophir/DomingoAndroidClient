@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">DomingoAndroidClient</string>
+    <string name="app_name">Domingo</string>
+    <string name="app_label">Domingo</string>
+    <string name="search_hint">Search HashTag</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
     <string name="title_activity_post_list">PostListActivity</string>
+
+    <string name="SearchResultActivityQueryKey">SearchTerm</string>
+    <string name="search_title">Search</string>
 
 </resources>
