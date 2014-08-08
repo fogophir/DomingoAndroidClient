@@ -1,6 +1,7 @@
 package domingo.oa.domingoandroidclient;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.ListFragment;
 import android.app.SearchManager;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +45,7 @@ public class PostListActivity extends Activity implements ConnectionHelper.IConn
             if (error == null) {
                 JSONArray jObject = new JSONArray(JSONresult);
                 PostListAdapter adapter = new PostListAdapter(this, jObject);
-                _fragment.setListAdapter(adapter);
+                _fragment.setAdapter(adapter,(ExpandableListView) findViewById(R.id.list));
             }
             else{
                 //ERROR
@@ -94,7 +97,7 @@ public class PostListActivity extends Activity implements ConnectionHelper.IConn
     /**
      * The fragment which contains the list
      */
-    public static class PostListFragment extends ListFragment {
+    public static class PostListFragment extends Fragment {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,6 +105,11 @@ public class PostListActivity extends Activity implements ConnectionHelper.IConn
 
             View rootView = inflater.inflate(R.layout.fragment_post_list, container, false);
             return rootView;
+        }
+
+        public void setAdapter(ExpandableListAdapter adapter, ExpandableListView expListView){
+            // setting list adapter
+            expListView.setAdapter(adapter);
         }
     }
 }

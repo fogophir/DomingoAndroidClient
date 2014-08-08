@@ -23,7 +23,7 @@
             android:ellipsize="marquee"
             android:singleLine="true"
             android:text="Description1"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/firstLine"
@@ -36,6 +36,8 @@
             android:layout_toRightOf="@id/icon"
             android:gravity="center_vertical"
             android:text="Example application"
-            android:textSize="16sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
 
     </RelativeLayout>

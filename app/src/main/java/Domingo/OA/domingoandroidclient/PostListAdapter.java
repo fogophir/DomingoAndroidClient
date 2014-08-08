@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PostListAdapter extends BaseAdapter {
+public class PostListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private JSONArray data;
@@ -30,16 +31,21 @@ public class PostListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getGroupCount() {
         // TODO Auto-generated method stub
-        return data.length();
+            return data.length();
     }
 
     @Override
-    public Object getItem(int position) {
+    public int getChildrenCount(int i) {
+        return 1;
+    }
+
+    @Override
+    public Object getGroup(int i) {
         // TODO Auto-generated method stub
         try {
-            return data.getJSONObject(position);
+            return data.getJSONObject(i);
         }
         catch (JSONException e){
             return null;
@@ -47,18 +53,30 @@ public class PostListAdapter extends BaseAdapter {
     }
 
     @Override
-    public long getItemId(int position) {
+    public Object getChild(int i, int i2) {
         // TODO Auto-generated method stub
-        return position;
+        return getGroup(i);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View vi = convertView;
+    public long getGroupId(int i) {
+        return i;
+    }
 
-        //Log.w("Log", "Position: " + position);
+    @Override
+    public long getChildId(int i, int i2) {
+        return i2;
+    }
 
-        // getting the row layout for each item
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getGroupView(int position, boolean isExpanded, View view, ViewGroup viewGroup) {
+        View vi = view;
+
         if (vi == null)
             vi = inflater.inflate(R.layout.post_list_item, null);
 
@@ -68,7 +86,7 @@ public class PostListAdapter extends BaseAdapter {
         SmartImageView image = (SmartImageView) vi.findViewById(R.id.icon);
 
         // setting values
-        JSONObject obj = (JSONObject)getItem(position);
+        JSONObject obj = (JSONObject)getGroup(position);
 
         try {
             image.setImageUrl(obj.getString("ThumbImage"));
@@ -81,5 +99,35 @@ public class PostListAdapter extends BaseAdapter {
         }
 
         return vi;
+    }
+
+    @Override
+    public View getChildView(int position, int i2, boolean b, View view, ViewGroup viewGroup) {
+        View vi = view;
+
+        // getting the row layout for each item if null (if not, already has the object)
+        if (vi == null)
+            vi = inflater.inflate(R.layout.post_list_item_expanded, null);
+
+        // finding view's elements to set
+        TextView lblListItem = (TextView) vi.findViewById(R.id.lblListItem);
+
+        // setting values
+        JSONObject obj = (JSONObject)getGroup(position);
+
+        try {
+            String dateStr = DateHelper.unixToDate(obj.getString("CreatedTime"));
+            lblListItem.setText(dateStr);
+        }
+        catch (JSONException e){
+            Log.w("Error", e.getMessage());
+        }
+
+        return vi;
+    }
+
+    @Override
+    public boolean isChildSelectable(int i, int i2) {
+        return false;
     }
 }
