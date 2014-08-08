@@ -84,12 +84,12 @@ public class PostListActivity extends Activity implements ConnectionHelper.IConn
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            return true;
-        }
+        return true;
+    }
 
-        if (id == R.id.action_search){
-            onSearchRequested();
-        }
+    if (id == R.id.action_search){
+        onSearchRequested();
+    }
 
         return super.onOptionsItemSelected(item);
     }

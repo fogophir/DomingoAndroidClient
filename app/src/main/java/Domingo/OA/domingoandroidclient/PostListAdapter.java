@@ -1,6 +1,7 @@
 package domingo.oa.domingoandroidclient;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ public class PostListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private JSONArray data;
     private static LayoutInflater inflater = null;
+
+    private static Drawable ic_loading = null;
 
     public PostListAdapter(Context context, JSONArray data) {
         // TODO Auto-generated constructor stub
@@ -84,6 +87,8 @@ public class PostListAdapter extends BaseExpandableListAdapter {
         TextView textFirstLine = (TextView) vi.findViewById(R.id.firstLine);
         TextView textSecondLine = (TextView) vi.findViewById(R.id.secondLine);
         SmartImageView image = (SmartImageView) vi.findViewById(R.id.icon);
+        // setting image as loading until fetch
+        image.setImageResource(R.drawable.ic_loading);
 
         // setting values
         JSONObject obj = (JSONObject)getGroup(position);
