@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.loopj.android.image.SmartImageView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +56,8 @@ public class PostListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
 
+        //Log.w("Log", "Position: " + position);
+
         // getting the row layout for each item
         if (vi == null)
             vi = inflater.inflate(R.layout.post_list_item, null);
@@ -61,13 +65,14 @@ public class PostListAdapter extends BaseAdapter {
         // finding view's elements to set
         TextView textFirstLine = (TextView) vi.findViewById(R.id.firstLine);
         TextView textSecondLine = (TextView) vi.findViewById(R.id.secondLine);
-        ImageView image = (ImageView) vi.findViewById(R.id.icon);
+        SmartImageView image = (SmartImageView) vi.findViewById(R.id.icon);
 
         // setting values
         JSONObject obj = (JSONObject)getItem(position);
 
         try {
-            ImagesUtil.SetImageFromUrlToImageView(obj.getString("ThumbImage"),image);
+            image.setImageUrl(obj.getString("ThumbImage"));
+
             textFirstLine.setText(obj.getString("UserFullName"));
             textSecondLine.setText(obj.getString("CaptionText"));
         }

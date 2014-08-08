@@ -19,13 +19,13 @@ import java.io.InputStream;
  */
 public class ImagesUtil {
 
-    public static void SetImageFromUrlToImageView(String Url, ImageView imageView){
+    public void SetImageFromUrlToImageView(String Url, ImageView imageView){
 
         ImageDownloadTask task = new ImageDownloadTask(imageView);
         task.execute(Url);
     }
 
-    static class ImageDownloadTask extends AsyncTask<String, Void, Bitmap> {
+    class ImageDownloadTask extends AsyncTask<String, Void, Bitmap> {
 
         ImageView _imageView;
         public ImageDownloadTask(ImageView imageView){

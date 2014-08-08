@@ -29,7 +29,7 @@ public class PostListActivity extends Activity implements ConnectionHelper.IConn
                     .commit();
         }
 
-        handleIntent(getIntent());
+        performNewTagSearch(getIntent());
     }
 
     public void searchTag(String searchTerm){
@@ -56,10 +56,10 @@ public class PostListActivity extends Activity implements ConnectionHelper.IConn
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
-        handleIntent(intent);
+        performNewTagSearch(intent);
     }
 
-    private void handleIntent(Intent intent) {
+    private void performNewTagSearch(Intent intent) {
         // get the intent, verify the action and get the query
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
